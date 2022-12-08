@@ -39,7 +39,7 @@ class ViewModel : ViewModel() {
         if (jokeType.isEmpty()) {
             val url = "https://dad-jokes.p.rapidapi.com/random/joke/"
         } else {
-            val url = "https://dad-jokes.p.rapidapi.com/joke/type/"+jokeType
+            val url = "https://dad-jokes.p.rapidapi.com/joke/type/$jokeType"
         }
         println(url)
         val stringRequest = StringRequest(
