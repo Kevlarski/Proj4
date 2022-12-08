@@ -42,12 +42,12 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        binding.btnJoke.setOnClickListener {
-//            findNavController().navigate(
-//                R.id.action_FirstFragment_to_SecondFragment,
-//                bundleOf("jokeArg" to binding.jokeDropDown.text.toString())
-//            )
-//        }
+        binding.btnJoke.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_FirstFragment_to_SecondFragment,
+                bundleOf("jokeArg" to binding.jokeDropDown.text.toString())
+            )
+        }
         binding.btnRJoke.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
@@ -56,27 +56,6 @@ class FirstFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    val joke = currentJoke(binding.jokeDropDown.text.toString())
-    val url: HttpUrl = joke.toHttpUrl()
-    val client = OkHttpClient()
-    val request = okhttp3.Request.Builder()
-        .url(url)
-        .get()
-        .addHeader("X-RapidAPI-Key", "ce9834b9d2msh35b73155c38ea24p17cb8ajsn01dd3df894a4")
-        .addHeader("X-RapidAPI-Host", "dad-jokes.p.rapidapi.com")
-        .build()
-
-    val response = client.newCall(request).execute()
-
-    fun currentJoke(joke: String): String {
-        if (joke.isEmpty()) {
-            val url = "https://dad-jokes.p.rapidapi.com/random/joke/"
-        } else {
-            val url = "https://dad-jokes.p.rapidapi.com/joke/search?term=$joke&%22"
-        }
-        return url.toString();
     }
 
 }

@@ -1,11 +1,15 @@
 package com.example.project4
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.android.volley.Request
-import okhttp3.OkHttpClient
-import java.net.URL
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import org.json.JSONObject
 
-class ViewModel {
+
+class ViewModel : ViewModel() {
     private val apiKey: String = "ce9834b9d2msh35b73155c38ea24p17cb8ajsn01dd3df894a4"
     private val host: String = "dad-jokes.p.rapidapi.com"
     private var punchline: MutableLiveData<String> = MutableLiveData()
@@ -16,41 +20,43 @@ class ViewModel {
     fun getSetup(): MutableLiveData<String> {
         return setup
     }
+
     fun getPunchline(): MutableLiveData<String> {
         return punchline
     }
+
     fun getType(): MutableLiveData<String> {
         return type
     }
+
     fun getImage(): MutableLiveData<String> {
         return image
     }
 
-//    val client = OkHttpClient()
-//    val request = okhttp3.Request.Builder()
-//        .url(currentJoke())
-//        .get()
-//        .addHeader("X-RapidAPI-Key", "ce9834b9d2msh35b73155c38ea24p17cb8ajsn01dd3df894a4")
-//        .addHeader("X-RapidAPI-Host", "dad-jokes.p.rapidapi.com")
-//        .build()
-//
-//    val response = client.newCall(request).execute()
+    fun currentJoke(queue: RequestQueue, jokeType: String) {
 
-        fun currentJoke(joke: String) {
-            val url: String = ""
-            if(joke.isEmpty()){
-                val url= "https://dad-jokes.p.rapidapi.com/random/joke/"
-            }else{
-                val url= "https://dad-jokes.p.rapidapi.com/joke/type/$joke"
-            }
-            val client = OkHttpClient()
-            val request = okhttp3.Request.Builder()
-                .url(url)
-                .get()
-                .addHeader("X-RapidAPI-Key", "ce9834b9d2msh35b73155c38ea24p17cb8ajsn01dd3df894a4")
-                .addHeader("X-RapidAPI-Host", "dad-jokes.p.rapidapi.com")
-                .build()
-
-            val response = client.newCall(request).execute()
+        val url = ""
+        if (jokeType.isEmpty()) {
+            val url = "https://dad-jokes.p.rapidapi.com/random/joke/"
+        } else {
+            val url = "https://dad-jokes.p.rapidapi.com/joke/type/"+jokeType
         }
+        println(url)
+        val stringRequest = StringRequest(
+            Request.Method.GET, url,
+            Response.Listener<String> { response ->
+                // create JSONObject
+                val obj = JSONObject(response)
+                val body = obj.getJSONArray("body").getJSONObject(0)
+                setup.setValue(body.getString("setup"))
+                punchline.setValue(body.getString("punchline"))
+                val imageUrl = "https://dad-jokes.p.rapidapi.com/random/joke/png"
+                image.setValue(imageUrl)
+            },
+            Response.ErrorListener { "oops" })
+
+// Add the request to the RequestQueue.
+        queue.add(stringRequest)
+
     }
+}

@@ -7,46 +7,49 @@
     tools:context=".SecondFragment">
 
     <Button
-        android:id="@+id/button_second"
+        android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="349dp"
-        android:text="Back"
+        android:layout_marginTop="464dp"
+        android:text="@string/back"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/txtSetup"
+        android:id="@+id/setup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="146dp"
         android:layout_marginTop="92dp"
         android:layout_marginEnd="140dp"
-        android:text="&quot;Insert joke here&quot;"
+        android:text="@string/setup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/txtPunchline"
+        android:id="@+id/punchline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="164dp"
         android:layout_marginTop="53dp"
         android:layout_marginEnd="167dp"
-        android:text="Punchline"
+        android:text="@string/punchline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSetup" />
+        app:layout_constraintTop_toBottomOf="@+id/setup" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/image"
         android:layout_width="113dp"
         android:layout_height="116dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="100dp"
         android:src="@android:drawable/btn_star_big_on"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPunchline" />
+        app:layout_constraintTop_toBottomOf="@+id/punchline"
+        tools:ignore="ImageContrastCheck"
+        android:contentDescription="@string/jokePNG" />
 </androidx.constraintlayout.widget.ConstraintLayout>
