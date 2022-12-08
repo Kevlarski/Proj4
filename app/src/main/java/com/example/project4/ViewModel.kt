@@ -1,11 +1,14 @@
 package com.example.project4
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
+import okhttp3.HttpUrl.Companion.toHttpUrl
+import okhttp3.OkHttpClient
 import org.json.JSONObject
 
 
@@ -34,29 +37,20 @@ class ViewModel : ViewModel() {
     }
 
     fun currentJoke(queue: RequestQueue, jokeType: String) {
-
-        val url = ""
+        val url: String = ""
         if (jokeType.isEmpty()) {
-            val url = "https://dad-jokes.p.rapidapi.com/random/joke/"
+            val url: Uri = Uri.parse("https://dad-jokes.p.rapidapi.com/random/joke/")
         } else {
-            val url = "https://dad-jokes.p.rapidapi.com/joke/type/$jokeType"
+            val url: Uri = Uri.parse("https://dad-jokes.p.rapidapi.com/joke/type/$jokeType")
         }
-        println(url)
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            Response.Listener<String> { response ->
-                // create JSONObject
-                val obj = JSONObject(response)
-                val body = obj.getJSONArray("body").getJSONObject(0)
-                setup.setValue(body.getString("setup"))
-                punchline.setValue(body.getString("punchline"))
-                val imageUrl = "https://dad-jokes.p.rapidapi.com/random/joke/png"
-                image.setValue(imageUrl)
-            },
-            Response.ErrorListener { "oops" })
+        val client = OkHttpClient()
+        val request = okhttp3.Request.Builder()
+            .url(url)
+            .get()
+            .addHeader("X-RapidAPI-Key", "ce9834b9d2msh35b73155c38ea24p17cb8ajsn01dd3df894a4")
+            .addHeader("X-RapidAPI-Host", "dad-jokes.p.rapidapi.com")
+            .build()
 
-// Add the request to the RequestQueue.
-        queue.add(stringRequest)
-
+        val response = client.newCall(request).execute()
     }
 }
