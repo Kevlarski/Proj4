@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -16,7 +15,6 @@ class ViewModel : ViewModel() {
     private val host: String = "dad-jokes.p.rapidapi.com"
     private var punchline: MutableLiveData<String> = MutableLiveData()
     private var setup: MutableLiveData<String> = MutableLiveData()
-    private var type: MutableLiveData<String> = MutableLiveData()
     private var image: MutableLiveData<String> = MutableLiveData()
     private val client = OkHttpClient()
 
@@ -28,9 +26,9 @@ class ViewModel : ViewModel() {
         return punchline
     }
 
-    fun getImage(): MutableLiveData<String> {
-        return image
-    }
+//    fun getImage(): MutableLiveData<String> {
+//        return image
+//    }
 
     fun currentJoke(jokeType: String) {
 
@@ -76,4 +74,42 @@ class ViewModel : ViewModel() {
             }
         })
     }
+
+//    fun jokeImage() {
+//
+//        val urlBuilder: HttpUrl.Builder =
+//            "https://dad-jokes.p.rapidapi.com/random/joke/png".toHttpUrlOrNull()!!.newBuilder()
+//
+//        val url: String = urlBuilder.build().toString()
+//        val request = Request.Builder()
+//            .url(url)
+//            .get()
+//            .addHeader("X-RapidAPI-Key", apiKey)
+//            .addHeader("X-RapidAPI-Host", host)
+//            .build()
+//
+//        client.newCall(request).enqueue(object : Callback {
+//            override fun onFailure(call: Call, e: IOException) {
+//                call.cancel()
+//            }
+//
+//            @Throws(IOException::class)
+//            override fun onResponse(call: Call, response: Response) {
+//                if (response.isSuccessful) {
+//                    val responseData = response.body!!.string()
+//                    try {
+//                        var json = JSONObject(responseData).getJSONObject("body")
+//                        var jstring = json.getString("image")
+//                        var png = jstring.drop(22)
+//                        println(png)
+//                        image.postValue(png)
+//
+//                    } catch (e: JSONException) {
+//                        println("this broke")
+//                    }
+//
+//                }
+//            }
+//        })
+//    }
 }

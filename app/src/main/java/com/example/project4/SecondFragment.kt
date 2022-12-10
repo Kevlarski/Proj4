@@ -1,15 +1,14 @@
 package com.example.project4
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.project4.databinding.FragmentSecondBinding
-import com.squareup.picasso.Picasso
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -42,9 +41,10 @@ class SecondFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(ViewModel::class.java)
         var jokeType = arguments?.getString("jokeArg").toString().lowercase()
-        println(jokeType)
+
 
         viewModel.currentJoke(jokeType)
+//        viewModel.jokeImage()
 
         val setupObserver = Observer<String> { setup -> binding.setup.text = setup }
         viewModel.getSetup().observe(viewLifecycleOwner, setupObserver)
@@ -52,9 +52,21 @@ class SecondFragment : Fragment() {
         val punchlineObserver = Observer<String> { punchline -> binding.punchline.text = punchline }
         viewModel.getPunchline().observe(viewLifecycleOwner, punchlineObserver)
 
-//        val imageObserver = Observer<String> { icon -> Picasso.with(context).load(icon).into(binding.image) }
+//        val imageObserver =
+//            Observer<String> { image -> Picasso.with(context).load(image).into(binding.image) }
+//
 //        viewModel.getImage().observe(viewLifecycleOwner, imageObserver)
+//
+//        var imgString = viewModel.getImage().value
+//        if(imgString!=null){
+//            var image = Base64.getDecoder().decode(imgString)
+//            var path =
+//                Path("/home/kevlar/Desktop/school/Fall22/Mobile_App_Dev/Proj4/app/src/main/res/drawable/d1.png")
+//            path.writeBytes(image)
+//        }
+
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
