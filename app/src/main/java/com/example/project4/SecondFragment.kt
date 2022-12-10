@@ -52,8 +52,8 @@ class SecondFragment : Fragment() {
         val punchlineObserver = Observer<String> { punchline -> binding.punchline.text = punchline }
         viewModel.getPunchline().observe(viewLifecycleOwner, punchlineObserver)
 
-        val imageObserver = Observer<String> { icon -> Picasso.with(context).load(icon).into(binding.image) }
-        viewModel.getImage().observe(viewLifecycleOwner, imageObserver)
+//        val imageObserver = Observer<String> { icon -> Picasso.with(context).load(icon).into(binding.image) }
+//        viewModel.getImage().observe(viewLifecycleOwner, imageObserver)
     }
     override fun onDestroyView() {
         super.onDestroyView()

@@ -28,10 +28,6 @@ class ViewModel : ViewModel() {
         return punchline
     }
 
-    fun getType(): MutableLiveData<String> {
-        return type
-    }
-
     fun getImage(): MutableLiveData<String> {
         return image
     }
@@ -43,8 +39,9 @@ class ViewModel : ViewModel() {
             urlBuilder =
                 "https://dad-jokes.p.rapidapi.com/random/joke".toHttpUrlOrNull()!!.newBuilder()
         } else {
-            urlBuilder = "https://dad-jokes.p.rapidapi.com/joke/search?term=$jokeType".toHttpUrlOrNull()!!
-                .newBuilder()
+            urlBuilder =
+                "https://dad-jokes.p.rapidapi.com/joke/search?term=$jokeType".toHttpUrlOrNull()!!
+                    .newBuilder()
         }
 
 
@@ -57,7 +54,7 @@ class ViewModel : ViewModel() {
             .addHeader("X-RapidAPI-Host", host)
             .build()
 
-            client.newCall(request).enqueue(object : Callback {
+        client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 call.cancel()
             }
@@ -67,12 +64,12 @@ class ViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     val responseData = response.body!!.string()
                     try {
-                        var rand  = (Math.random()*10).toInt()
-                        var json: JSONArray =
-                            JSONObject(responseData).getJSONArray("body")
-                        setup.postValue(json.getJSONObject(rand).getString("setup"))
-                        punchline.postValue(json.getJSONObject(rand).getString("punchline"))
-                    }catch( e: JSONException){
+                        var json = JSONObject(responseData).getJSONArray("body")
+                        var numJokes = (json.length()) - 1
+                        var index = (0..numJokes).random()
+                        setup.postValue(json.getJSONObject(index).getString("setup"))
+                        punchline.postValue(json.getJSONObject(index).getString("punchline"))
+                    } catch (e: JSONException) {
                         setup.postValue("no jokes")
                     }
                 }

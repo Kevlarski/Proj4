@@ -3,10 +3,10 @@
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string-array name="JokeType">
-        <item>Knock-Knock</item>
         <item>Dad</item>
         <item>Donkey</item>
         <item>General</item>
+        <item>Knock-Knock</item>
         <item>Music</item>
     </string-array>
     <string name="first_fragment_label">First Fragment</string>
