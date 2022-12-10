@@ -9,10 +9,7 @@ import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.example.project4.databinding.FragmentFirstBinding
-import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import okhttp3.OkHttpClient
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -49,7 +46,7 @@ class FirstFragment : Fragment() {
             )
         }
         binding.btnRJoke.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment,bundleOf("jokeArg" to "None"))
         }
     }
 

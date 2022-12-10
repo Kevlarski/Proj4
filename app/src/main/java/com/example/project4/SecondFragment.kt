@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.android.volley.toolbox.Volley
 import com.example.project4.databinding.FragmentSecondBinding
 import com.squareup.picasso.Picasso
 
@@ -42,10 +41,10 @@ class SecondFragment : Fragment() {
         }
 
         viewModel = ViewModelProvider(this).get(ViewModel::class.java)
-        var jokeType = arguments?.getString("jokeArg").toString().toLowerCase()
+        var jokeType = arguments?.getString("jokeArg").toString().lowercase()
         println(jokeType)
-        var queue = Volley.newRequestQueue(context)
-        viewModel.currentJoke(queue,jokeType)
+
+        viewModel.currentJoke(jokeType)
 
         val setupObserver = Observer<String> { setup -> binding.setup.text = setup }
         viewModel.getSetup().observe(viewLifecycleOwner, setupObserver)

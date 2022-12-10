@@ -1,15 +1,14 @@
 package com.example.project4
 
-import android.net.Uri
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.OkHttpClient
+import okhttp3.*
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
+import java.io.IOException
 
 
 class ViewModel : ViewModel() {
@@ -19,6 +18,7 @@ class ViewModel : ViewModel() {
     private var setup: MutableLiveData<String> = MutableLiveData()
     private var type: MutableLiveData<String> = MutableLiveData()
     private var image: MutableLiveData<String> = MutableLiveData()
+    private val client = OkHttpClient()
 
     fun getSetup(): MutableLiveData<String> {
         return setup
@@ -36,21 +36,47 @@ class ViewModel : ViewModel() {
         return image
     }
 
-    fun currentJoke(queue: RequestQueue, jokeType: String) {
-        val url: String = ""
-        if (jokeType.isEmpty()) {
-            val url: Uri = Uri.parse("https://dad-jokes.p.rapidapi.com/random/joke/")
+    fun currentJoke(jokeType: String) {
+
+        val urlBuilder: HttpUrl.Builder?
+        if (jokeType == "none") {
+            urlBuilder =
+                "https://dad-jokes.p.rapidapi.com/random/joke".toHttpUrlOrNull()!!.newBuilder()
         } else {
-            val url: Uri = Uri.parse("https://dad-jokes.p.rapidapi.com/joke/type/$jokeType")
+            urlBuilder = "https://dad-jokes.p.rapidapi.com/joke/search?term=$jokeType".toHttpUrlOrNull()!!
+                .newBuilder()
         }
-        val client = OkHttpClient()
-        val request = okhttp3.Request.Builder()
+
+
+        val url: String = urlBuilder.build().toString()
+
+        val request = Request.Builder()
             .url(url)
             .get()
-            .addHeader("X-RapidAPI-Key", "ce9834b9d2msh35b73155c38ea24p17cb8ajsn01dd3df894a4")
-            .addHeader("X-RapidAPI-Host", "dad-jokes.p.rapidapi.com")
+            .addHeader("X-RapidAPI-Key", apiKey)
+            .addHeader("X-RapidAPI-Host", host)
             .build()
 
-        val response = client.newCall(request).execute()
+            client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                call.cancel()
+            }
+
+            @Throws(IOException::class)
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    val responseData = response.body!!.string()
+                    try {
+                        var rand  = (Math.random()*10).toInt()
+                        var json: JSONArray =
+                            JSONObject(responseData).getJSONArray("body")
+                        setup.postValue(json.getJSONObject(rand).getString("setup"))
+                        punchline.postValue(json.getJSONObject(rand).getString("punchline"))
+                    }catch( e: JSONException){
+                        setup.postValue("no jokes")
+                    }
+                }
+            }
+        })
     }
 }
