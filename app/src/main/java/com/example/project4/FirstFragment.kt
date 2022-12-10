@@ -42,7 +42,7 @@ class FirstFragment : Fragment() {
         binding.btnJoke.setOnClickListener {
             findNavController().navigate(
                 R.id.action_FirstFragment_to_SecondFragment,
-                bundleOf("jokeArg" to binding.jokeDropDown.text.toString())
+                bundleOf("jokeArg" to binding.jokeDropDown.text.toString().toLowerCase())
             )
         }
         binding.btnRJoke.setOnClickListener {

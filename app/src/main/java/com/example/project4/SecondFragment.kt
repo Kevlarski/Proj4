@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+//import com.bumptech.glide.Glide
 import com.example.project4.databinding.FragmentSecondBinding
 
 /**
@@ -44,7 +45,7 @@ class SecondFragment : Fragment() {
 
 
         viewModel.currentJoke(jokeType)
-//        viewModel.jokeImage()
+
 
         val setupObserver = Observer<String> { setup -> binding.setup.text = setup }
         viewModel.getSetup().observe(viewLifecycleOwner, setupObserver)
@@ -52,6 +53,10 @@ class SecondFragment : Fragment() {
         val punchlineObserver = Observer<String> { punchline -> binding.punchline.text = punchline }
         viewModel.getPunchline().observe(viewLifecycleOwner, punchlineObserver)
 
+//        Glide.with(view).load(R.drawable.img2).into(binding.image)
+
+    //        viewModel.jokeImage()
+        //potential image decoding code
 //        val imageObserver =
 //            Observer<String> { image -> Picasso.with(context).load(image).into(binding.image) }
 //
